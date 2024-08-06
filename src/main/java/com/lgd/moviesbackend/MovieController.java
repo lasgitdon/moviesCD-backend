@@ -20,15 +20,12 @@ public class MovieController {
 
     @GetMapping()
     public List<Movie> getMovies() {
-        System.out.println("Hello getMovies 2!");
         return movieRepository.findAll(); //Arrays.asList(new Movie("test1"), new Movie("test2"));
     }
 
     @GetMapping("/{id}")
     public Movie getMovieById(@PathVariable String id) {
-        Movie mt = new Movie();
-        mt.id = id;
-        return movieRepository.findOne(Example.of(mt)).orElse(null);
+        return movieRepository.findMovieById(id);
     }
 
     @PostMapping("/add")
