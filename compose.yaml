@@ -1,0 +1,35 @@
+version: "3"
+
+volumes:
+  dbdata:
+
+services:
+  movies-backend-service:
+    image: movies-backend-image:latest
+    container_name: movies-backend-container
+    platform: linux/x86_64
+    ports:
+      - 8082:8082
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres-service
+    env_file:
+      - ./postgres.env
+    environment:
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  postgres-service:
+    image: postgres:latest
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    env_file:
+      - ./postgres.env
+    ports:
+      - 5432:5432
+
+  movies-frontend-service:
+    image: movies-client
+    ports:
+      - 4200:4200
